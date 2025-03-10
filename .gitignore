@@ -1,0 +1,9 @@
+# Diretorios
+.qodo
+node_modules/
+.vscode/
+
+# Arquivos
+.env
+yarn.lock
+tsconfig.json
