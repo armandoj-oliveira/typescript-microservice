@@ -3,8 +3,7 @@ import PessoaController from '../controllers/PessoaController'
 
 const pessoaRoutes = Router();
 
-pessoaRoutes.get('/pessoas', PessoaController.consultarTodasPessoas)
-pessoaRoutes.get('/pessoa/:usuario', PessoaController.consultarPessoa);
-pessoaRoutes.post('/pessoa', PessoaController.criarPessoa);
+pessoaRoutes.get('/', PessoaController.consultarTodasPessoas);
+pessoaRoutes.get('/:usuario', PessoaController.consultarPessoa);
 
 export default pessoaRoutes;

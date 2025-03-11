@@ -1,31 +1,24 @@
-import mongoose, { Document } from "mongoose";
+import mongoose from "mongoose";
 
-export interface IUnidade extends Document {
-    unidade_id: number;
-    unidade_sigla: string;
-    unidade_nome: string;
-    unidade_instituicao: string;
-}
-
-const unidadeSchema = new mongoose.Schema<IUnidade>({
+const unidadeSchema = new mongoose.Schema({
     unidade_id: { 
         type: Number, 
-        required: true 
+        required: [true, 'O ID da unidade é obrigatório.'] 
     },
     unidade_sigla: { 
         type: String, 
-        required: true 
+        required: [true, 'A sigla da unidade é obrigatório.'] 
     },
     unidade_nome: { 
         type: String, 
-        required: true 
+        required: [true, 'O nome da unidade é obrigatório.'] 
     },
     unidade_instituicao: { 
         type: String, 
-        required: true 
+        required: [true, 'A instituição da unidade é obrigatório.']  
     }
 }, { timestamps: true });
 
-const Unidade = mongoose.model<IUnidade>('Unidade', unidadeSchema);
+const Unidade = mongoose.model('Unidade', unidadeSchema, 'unidades'); // referencia à collection
 
 export default Unidade;

@@ -1,9 +1,6 @@
-import mongoose, { Document } from "mongoose";
-import IPessoa from "../interfaces/IPessoa";
+import mongoose from "mongoose";
 
-export interface IPessoaDocument extends IPessoa, Document {}
-
-const pessoaSchema = new mongoose.Schema<IPessoaDocument>(
+const pessoaSchema = new mongoose.Schema(
     {
         nome_usuario: {
             type: String,
@@ -22,8 +19,7 @@ const pessoaSchema = new mongoose.Schema<IPessoaDocument>(
         },
         unidade_id: [
             {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "Unidade",
+                type: Number,
                 required: [true, "O ID da unidade do usuário é obrigatório."],
             },
         ],
@@ -31,11 +27,37 @@ const pessoaSchema = new mongoose.Schema<IPessoaDocument>(
             type: [String],
             required: [true, "O hash do usuário é obrigatório."],
             trim: true,
+            default: () => [new Date().toISOString()]
         },
     },
-    { timestamps: true }
+    { 
+        timestamps: true,
+        versionKey: false,
+
+        // Define a transformação de saída ao converter para JSON
+        toJSON: {
+            virtuals: true,
+            transform: (_, ret) => {
+                delete ret.id; // Remove a chave "id" redundante, já que "_id" está presente
+                return ret;
+            }
+        },
+
+         // Define a transformação de saída ao converter para um objeto
+        toObject: { 
+            virtuals: true 
+        }
+    }
 );
 
-const Pessoa = mongoose.model<IPessoaDocument>("usuarios", pessoaSchema);
+// Adição de um Virtual para popular os dados da unidade no usuário
+pessoaSchema.virtual("unidade_detalhes", {
+    ref: "Unidade",
+    localField: "unidade_id",
+    foreignField: "unidade_id",
+    justOne: true,
+});
+
+const Pessoa = mongoose.model("usuarios", pessoaSchema);
 
 export { Pessoa, pessoaSchema };
