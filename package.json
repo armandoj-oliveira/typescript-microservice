@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "dev": "nodemon --ext ts --exec ts-node server.ts",
+    "dev": "nodemon --ext ts --exec ts-node src/app.ts",
     "build": "rimraf dist && tsc",
     "start": "node dist/server.js"
   },

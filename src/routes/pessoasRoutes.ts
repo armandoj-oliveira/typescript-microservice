@@ -1,9 +1,10 @@
 import { Router } from 'express';
-import PessoaController from '../controllers/pessoaController';
+import PessoaController from '../controllers/PessoaController'
 
-const routes = Router();
+const pessoaRoutes = Router();
 
-routes.get('/:nome_usuario', PessoaController.consultarPessoa);
-routes.post('/', PessoaController.criarPessoa);
+pessoaRoutes.get('/pessoas', PessoaController.consultarTodasPessoas)
+pessoaRoutes.get('/pessoa/:usuario', PessoaController.consultarPessoa);
+pessoaRoutes.post('/pessoa', PessoaController.criarPessoa);
 
-export default routes;
+export default pessoaRoutes;

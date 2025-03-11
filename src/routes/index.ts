@@ -1,12 +1,14 @@
-import express, { Request, Response } from 'express';
-import pessoa from './pessoasRoutes'
+import express, { Application, Request, Response } from 'express';
+import pessoasRoutes from './pessoasRoutes';
 
-const router = (app: express.Application) => {
+const configurarRotas = (app: Application) => {
     app.route('/').get((req: Request, res: Response) => {
         res.status(200).send('Olá mundo!');
     });
 
-    app.use(express.json(), pessoa);
+    // Middleware
+    app.use(express.json());
+    app.use('/', pessoasRoutes);
 }
 
-export default router;
+export default configurarRotas;

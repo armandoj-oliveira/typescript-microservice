@@ -1,19 +1,14 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
-const stringConexao = process.env.DB_CONNECTION_STRING as string;
-
-if (!stringConexao) {
-  throw new Error('Endereço do Banco não está definido!');
-}
-
-async function dbConnect() {
+async function conectarBanco(): Promise<mongoose.Connection> {
     try {
-        mongoose.connect(stringConexao);
-
-        console.log('Conectando ao MongoDB...');
+        await mongoose.connect(process.env.DB_CONNECTION_STRING as string);
+        console.log("Conectado ao MongoDB...");
+        return mongoose.connection;
     } catch (error) {
-        console.log('Erro ao conectar ao MongoDB: ', error);
+        console.error("Erro ao conectar ao MongoDB:", error);
+        throw error;
     }
 }
 
-export default dbConnect;
+export default conectarBanco;

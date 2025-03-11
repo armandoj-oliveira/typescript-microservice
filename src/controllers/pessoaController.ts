@@ -1,41 +1,56 @@
-import { Pessoa } from '../models/Pessoa';
 import { Request, Response } from 'express';
+import { Pessoa } from '../models/Pessoa';
+// import { obterObjectIdUnidade } from '../utils/unidadeHelper';
 
 class PessoaController {
-    static consultarPessoa = async (req: Request, res: Response): Promise<Response> => {
+    static consultarTodasPessoas = async (req: Request, res: Response): Promise<void> => {
         try {
-            const { nome_usuario } = req.params;
+            const listarPessoas = await Pessoa.find().lean();
+            res.status(200).json(listarPessoas);
+        } catch (error) {
+            console.error(`Erro ao consultar todas as pessoas: ${error}`);
+            res.status(500).json({ message: 'Erro interno no servidor.' });
+        }
+    };
 
-            if (!nome_usuario) {
-                return res.status(400).json({ message: 'O parâmetro "nome_usuario" é obrigatório.' });
+    static consultarPessoa = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const { usuario } = req.params;
+    
+            if (!usuario) {
+                res.status(400).json({ message: 'O parâmetro "usuario" é obrigatório.' });
+                return;
             }
-
-            const resultadoPessoa = await Pessoa.findOne({ nome_usuario }).populate('unidade_id').exec();
-
+    
+            let resultadoPessoa = await Pessoa.findOne({ usuario }).lean();
+    
             if (!resultadoPessoa) {
-                return res.status(404).json({ message: 'Pessoa não localizada.' });
+                res.status(404).json({ message: 'Pessoa não localizada.' });
+                return;
             }
-
-            return res.status(200).json(resultadoPessoa);
-
+    
+            res.status(200).json(resultadoPessoa);
         } catch (error) {
             console.error(`Erro ao consultar usuário: ${error}`);
-            return res.status(500).json({ message: 'Erro interno no servidor.' });
+            res.status(500).json({ message: 'Erro interno no servidor.' });
         }
-    }
-
-    static criarPessoa = async (req: Request, res: Response): Promise<Response> => {
+    };
+    
+    
+    static criarPessoa = async (req: Request, res: Response): Promise<void> => {
         try {
             const { nome_usuario, usuario, instituicao, unidade_id, infra_hash } = req.body;
 
             if (!nome_usuario || !usuario || !instituicao || !unidade_id || !infra_hash) {
-                return res.status(400).json({ message: 'Todos os campos são obrigatórios.' });
+                res.status(400).json({ message: 'Todos os campos são obrigatórios.' });
+                return;
             }
 
-            const pessoaExistente = await Pessoa.findOne({ nome_usuario });
+            const pessoaExistente = await Pessoa.findOne({ usuario: usuario });
 
             if (pessoaExistente) {
-                return res.status(409).json({ message: 'Pessoa já existe.' });
+                res.status(409).json({ message: 'Pessoa já existe.' });
+                return;
             }
 
             const novaPessoa = new Pessoa({
@@ -47,13 +62,12 @@ class PessoaController {
             });
 
             await novaPessoa.save();
-            return res.status(201).json(novaPessoa);
-
+            res.status(201).json(novaPessoa);
         } catch (error) {
             console.error(`Erro ao criar usuário: ${error}`);
-            return res.status(500).json({ message: 'Erro interno no servidor.' });
+            res.status(500).json({ message: 'Erro interno no servidor.' });
         }
-    }
+    };
 }
 
 export default PessoaController;
