@@ -16,9 +16,8 @@ class PessoaController {
 
 
     static consultarPessoa = async (req: Request, res: Response): Promise<void> => {
-        
         try {
-            const { usuario} = req.body;
+            const { usuario } = req.body;
             
             if(!usuario) {
                 res.status(400).json({ mensagem: 'Usuário não fornecido!' });

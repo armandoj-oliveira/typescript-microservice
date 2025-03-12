@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import PessoaController from '../controllers/PessoaController'
+import PessoaController from '../controllers/pessoaController';
 import HashController from '../controllers/HashController';
 
 const pessoaRoutes = Router();
