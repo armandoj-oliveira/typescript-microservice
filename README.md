@@ -14,7 +14,6 @@ Criação de um **microserviço** utilizando **TypeScript**, **Express** e **Mon
 - [📌 Tecnologias](#-tecnologias)
 - [⚡ Instalação](#-instalação)
 - [🌐 Rotas da API](#-rotas-da-api)
-- [📜 Licença](#licenças)
 
 ---
 
