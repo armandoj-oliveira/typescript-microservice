@@ -13,8 +13,8 @@ Criação de um **microserviço** utilizando **TypeScript**, **Express** e **Mon
 ## 📌 **Índice**
 - [📌 Tecnologias](#-tecnologias)
 - [⚡ Instalação](#-instalação)
-- [🚀 Como Usar](#-como-usar)
-- [📌 Rotas Disponíveis](#-rotas-disponíveis)
+- [🌐 Rotas da API](#-rotas-da-api)
+- [📜 Licença](#licenças)
 
 ---
 
