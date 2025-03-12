@@ -1,3 +1,4 @@
+
 import mongoose from "mongoose";
 
 const pessoaSchema = new mongoose.Schema(
@@ -5,33 +6,42 @@ const pessoaSchema = new mongoose.Schema(
         nome_usuario: {
             type: String,
             required: [true, "O nome do usuário é obrigatório."],
-            trim: true,
+            trim: true
         },
         usuario: {
             type: String,
             required: [true, "O usuário do sistema é obrigatório."],
             trim: true,
+            unique: true
         },
         instituicao: {
             type: String,
             required: [true, "A instituição do usuário é obrigatória."],
+            trim: true
+        },
+        infra_hash: {
+            type: [String],
+            required: [true, "O hash do usuário é obrigatório."],
             trim: true,
+            validate: {
+                validator: function(arr: string[]) {
+                    return new Set(arr).size === arr.length // Impede valores duplicados
+                },
+                message: 'Os valores em infra_hash devem ser únicos.'
+            }
         },
         unidade_id: [
             {
                 type: Number,
                 required: [true, "O ID da unidade do usuário é obrigatório."],
-            },
-        ],
-        infra_hash: {
-            type: [String],
-            required: [true, "O hash do usuário é obrigatório."],
-            trim: true,
-            default: () => [new Date().toISOString()]
-        },
+            }
+        ]
     },
     { 
-        timestamps: true,
+        timestamps:{
+            createdAt: 'dataCriacao',
+            updatedAt: 'dataAtualizacao'
+        },
         versionKey: false,
 
         // Define a transformação de saída ao converter para JSON

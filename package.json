@@ -2,12 +2,15 @@
   "scripts": {
     "dev": "nodemon --ext ts --exec ts-node src/app.ts",
     "build": "rimraf dist && tsc",
-    "start": "node src/app.js"
+    "start": "node src/app.js",
+    "test": "yarn lint",
+    "lint": "yarn eslint . --ext .js,.ts --fix"
   },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "moment-timezone": "^0.5.47",
     "mongodb": "^6.14.2",
     "mongoose": "^8.12.1",
     "rimraf": "^6.0.1",
@@ -15,10 +18,13 @@
     "typescript": "^5.8.2"
   },
   "devDependencies": {
+    "@eslint/js": "^9.22.0",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/node": "^22.13.10",
     "eslint": "^9.22.0",
-    "nodemon": "^3.1.9"
+    "globals": "^16.0.0",
+    "nodemon": "^3.1.9",
+    "typescript-eslint": "^8.26.1"
   }
 }

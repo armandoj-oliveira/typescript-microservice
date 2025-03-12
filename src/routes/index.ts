@@ -9,8 +9,8 @@ const configurarRotas = (app: Application) => {
 
     // Middleware
     app.use(express.json());
-    app.use('/pessoa', pessoasRoutes);
-    app.use('/unidade', unidadeRoutes);
+    app.use('/pessoas', pessoasRoutes);
+    app.use('/unidades', unidadeRoutes);
 }
 
 export default configurarRotas;
