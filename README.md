@@ -34,34 +34,60 @@ Este projeto utiliza as seguintes tecnologias:
 
 ## ⚡ **Instalação**
 1️⃣ **Clone este repositório:**
-```sh
+
+```
 git clone https://github.com/armandoj-oliveira/microservico-pessoas-unidades.git
 ```
-2️⃣ Acesse a pasta do projeto:
-```sh
+
+2️⃣ **Acesse a pasta do projeto:**
+
+```
 cd microservico-typescript
 ```
-3️⃣ Instale as dependências:
-```sh
+
+3️⃣ **Instale as dependências:**
+```
 yarn install
+```
+
+4️⃣ **Execute o projeto:**
+
+```
+yarn start
+```
+
+5️⃣ **Outros comandos úteis:**
+
+Para rodar os testes:
+```
+yarn test
+```
+
+Para verificar e corrigir problemas de formatação e estilo de código:
+```
+yarn lint
 ```
 
 ---
 
-## 🚀 **Como Usar**
+## 🌐 Rotas da API
 
-Após iniciar o servidor, a API estará rodando em http://localhost:8000 ou na porta configurada.
+### 🧑‍💻 Pessoas
+| Método | Endpoint      | Descrição                                      |
+|--------|-------------|----------------------------------------------|
+| GET    | `/usuarios`  | Retorna todas as pessoas cadastradas        |
+| GET    | `/`          | Consulta uma pessoa específica              |
+| POST   | `/`          | Cria um novo registro de pessoa             |
+| PATCH  | `/hash`      | Atualiza o hash diário da pessoa            |
 
-📌 Rotas Disponíveis:
+### 🏢 Unidades
+| Método | Endpoint           | Descrição                                    |
+|--------|--------------------|--------------------------------------------|
+| GET    | `/`                | Retorna todas as unidades                  |
+| GET    | `/:unidade_id`     | Consulta uma unidade específica pelo ID    |
 
-📌 Pessoa (/pessoa)
 
-GET /pessoa → Retorna todas as pessoas cadastradas.
+---
 
-GET /pessoa/:usuario → Retorna uma pessoa específica.
-
-📌 Unidade (/unidade)
-
-GET /unidade → Retorna todas as unidades cadastradas.
-
-GET /unidade/:unidade_id → Retorna uma unidade específica.
+## 📜 Licença
+Este projeto está licenciado sob a licença MIT. Veja o arquivo [LICENSE](./LICENSE) para mais detalhes.
