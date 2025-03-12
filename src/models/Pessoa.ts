@@ -64,8 +64,7 @@ const pessoaSchema = new mongoose.Schema(
 pessoaSchema.virtual("unidade_detalhes", {
     ref: "Unidade",
     localField: "unidade_id",
-    foreignField: "unidade_id",
-    justOne: true,
+    foreignField: "unidade_id"
 });
 
 const Pessoa = mongoose.model("usuarios", pessoaSchema);

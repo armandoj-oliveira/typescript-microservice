@@ -6,4 +6,3 @@ node_modules/
 # Arquivos
 .env
 yarn.lock
-tsconfig.json

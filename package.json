@@ -1,8 +1,16 @@
 {
+  "name": "typescript-microservice",
+  "version": "1.0.0",
+  "description": "Microserviço para conexão com o banco de dados, incluindo operações.",
+  "author": {
+    "name": "Armando José Vieira Dias de Oliveira",
+    "url": "https://github.com/armandoj-oliveira"
+  },
+  "license": "MIT",
   "scripts": {
-    "dev": "nodemon --ext ts --exec ts-node src/app.ts",
-    "build": "rimraf dist && tsc",
     "start": "node src/app.js",
+    "build": "rimraf dist && tsc",
+    "dev": "nodemon --ext ts --exec ts-node src/app.ts",
     "test": "yarn lint",
     "lint": "yarn eslint . --ext .js,.ts --fix"
   },

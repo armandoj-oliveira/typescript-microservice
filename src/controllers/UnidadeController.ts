@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Unidade from "../models/Unidade";
+import { Pessoa } from "../models/Pessoa";
 
 class UnidadeController {
     static consultarTodasUnidades = async (req: Request, res: Response): Promise<void> => {
@@ -33,7 +34,28 @@ class UnidadeController {
 
         } catch (erro) {
             console.log(`Erro ao consultar o id da unidade: ${(erro as Error).message}`);
-            res.status(500).json({ mensagem: 'Erro interno no servidor.' })
+            res.status(500).json({ mensagem: 'Erro interno no servidor.' });
+        }
+    }
+
+    // Método para adicionar uma nova unidade ao usuário, caso ele esteja associado a múltiplas unidades
+    static adicionarUnidade = async (usuario: string, unidade_id: number) => {
+        try{
+
+            if (unidade_id === undefined) {
+                throw new Error('Unidade não fornecida!');
+            }
+
+            const pessoaAtualizada = await Pessoa.findOneAndUpdate(
+                { usuario }, 
+                { $addToSet: { unidade_id: unidade_id } }, 
+                { new: true }
+            );
+
+            return pessoaAtualizada;
+        } catch (erro) {
+            console.log(`Erro ao adicionar a unidade: ${(erro as Error).message}`);
+            throw new Error('Erro interno no servidor.')
         }
     }
 }
