@@ -11,7 +11,7 @@
     "start": "node src/app.js",
     "build": "rimraf dist && tsc",
     "dev": "nodemon --ext ts --exec ts-node src/app.ts",
-    "test": "yarn lint",
+    "test": "yarn eslint . --ext .js,.ts",
     "lint": "yarn eslint . --ext .js,.ts --fix"
   },
   "dependencies": {

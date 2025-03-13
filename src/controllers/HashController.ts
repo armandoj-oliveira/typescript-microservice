@@ -1,23 +1,22 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { verificarPessoaExistente } from '../utils/verificarPessoaHelper';
 import { Pessoa } from '../models/Pessoa';
+import Erro from '../errors/Erro';
 
 class HashController {
-    static atualizarHashDiario = async (req: Request, res: Response): Promise<void> => {
+    static atualizarHashDiario = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
             const { usuario, infra_hash } = req.body;
 
-            if(!usuario) {
-                res.status(400).json({ mensagem: 'Usuário não fornecido!' });
-                return;
+            if (!usuario) {
+                throw new Erro('Usuário não fornecido!', 400);
             } else if (!infra_hash) {
-                res.status(400).json({ mensagem: 'Hash não fornecido!' });
-                return;
+                throw new Erro('Hash não fornecido!', 400);
             }
 
             const pessoa = await verificarPessoaExistente(usuario);
 
-            if(pessoa) {
+            if (pessoa) {
                 const atualizaPessoa = await Pessoa.findOneAndUpdate( 
                     { usuario }, 
                     { $addToSet: { infra_hash } },
@@ -28,10 +27,9 @@ class HashController {
                 return;
             }
 
-            res.status(422).json({ mensagem: 'Dados inválidos' });
+            throw new Erro('Dados inválidos', 422);
         } catch (erro) {
-            console.log(`Erro ao atualizar o hash da pessoa: ${(erro as Error).message}`);
-            res.status(500).json({ mensagem: 'Erro interno do servidor.' });
+            next(erro);
         }
     }
 }
