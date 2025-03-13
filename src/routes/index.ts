@@ -1,15 +1,22 @@
-import express, { Application, Request, Response } from 'express';
+import express, { Application, NextFunction, Request, Response } from 'express';
 import pessoasRoutes from './pessoasRoutes';
 import unidadeRoutes from './unidadeRoutes';
 import { verificarInstituicaoMiddleware } from '../middleware/verificarInstituicaoMiddleware';
 import manipuladorErroMiddleware from '../middleware/manipuladorErroMiddleware';
 
-const configurarRotas = (app: Application) => {
+const configurarRotas = (app: Application) => { 
     app.route('/').get((req: Request, res: Response) => {
         res.status(200).send('Olá mundo!');
     });
-
+    
     app.use(express.json());
+
+    app.use((req: Request, res: Response ,next: NextFunction) => {
+        console.log("📥 Requisição recebida:");
+        console.log("Headers:", req.headers);
+        console.log("Body:", req.body);
+        next();
+    });
 
     // Middleware de Verificacao
     app.use(verificarInstituicaoMiddleware);

@@ -2,23 +2,20 @@ import { Request, Response, NextFunction } from 'express';
 import { verificarPessoaExistente } from '../utils/verificarPessoaHelper';
 import { Pessoa } from '../models/Pessoa';
 import Erro from '../errors/Erro';
+import validarEntradaDados from '../utils/validarEntradaDadosHelper';
 
 class HashController {
     static atualizarHashDiario = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
-            const { usuario, infra_hash } = req.body;
+            validarEntradaDados(req.body, ["usuario", "infra_hash"]);
 
-            if (!usuario) {
-                throw new Erro('Usuário não fornecido!', 400);
-            } else if (!infra_hash) {
-                throw new Erro('Hash não fornecido!', 400);
-            }
+            const { usuario, infra_hash } = req.body;
 
             const pessoa = await verificarPessoaExistente(usuario);
 
             if (pessoa) {
-                const atualizaPessoa = await Pessoa.findOneAndUpdate( 
-                    { usuario }, 
+                const atualizaPessoa = await Pessoa.findOneAndUpdate(
+                    { usuario },
                     { $addToSet: { infra_hash } },
                     { new: true }
                 );
@@ -32,6 +29,7 @@ class HashController {
             next(erro);
         }
     }
+
 }
 
 export default HashController;
