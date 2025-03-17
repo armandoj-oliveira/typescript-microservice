@@ -25,7 +25,7 @@ class PessoaController {
                 throw new ErroValidacao('Usuário não encontrado.', 404);
             }
     
-            res.status(200).json({ mensagem: 'Usuário localizado.', dados: pessoaResultado });
+            res.status(200).json({ codigo: 'USUARIO_LOCALIZADO' ,mensagem: 'Usuário localizado.', dados: pessoaResultado });
         } catch (erro) {
             next(erro);
         }
@@ -40,13 +40,14 @@ class PessoaController {
 
             if (!pessoa) {
                 const novaPessoa = await Pessoa.create(req.body);
-                res.status(201).json({ mensagem: 'Pessoa cadastrada com sucesso!', dados: novaPessoa });
+                res.status(201).json({  codigo: 'USUARIO_CADASTRADO', mensagem: 'Pessoa cadastrada com sucesso!', dados: novaPessoa });
             } else if (!pessoa.unidade_id.includes(req.body.unidade_id)) {
                 const pessoaNovaUnidade = await UnidadeController.adicionarUnidade(req.body.usuario, req.body.unidade_id);
-                res.status(200).json({ mensagem: 'Unidade adicionada', dados: pessoaNovaUnidade });
-            } else {
-                res.status(200).json({ mensagem: 'Pessoa já existe.' });
+                res.status(200).json({ codigo: 'USUARIO_UNIDADE_ADICIONADA' ,mensagem: 'Unidade adicionada', dados: pessoaNovaUnidade });
+            } else {                
+                res.status(200).json({  codigo: 'USUARIO_EXISTENTE', mensagem: 'Pessoa já existe.' });
             }
+
         } catch (erro) {
             next(erro);
         }

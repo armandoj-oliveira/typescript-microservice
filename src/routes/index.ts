@@ -4,14 +4,14 @@ import unidadeRoutes from './unidadeRoutes';
 import { verificarInstituicaoMiddleware } from '../middleware/verificarInstituicaoMiddleware';
 import manipuladorErroMiddleware from '../middleware/manipuladorErroMiddleware';
 
-const configurarRotas = (app: Application) => { 
+const configurarRotas = (app: Application) => {
     app.route('/').get((req: Request, res: Response) => {
         res.status(200).send('Olá mundo!');
     });
-    
+
     app.use(express.json());
 
-    app.use((req: Request, res: Response ,next: NextFunction) => {
+    app.use((req: Request, res: Response, next: NextFunction) => {
         console.log("📥 Requisição recebida:");
         console.log("Headers:", req.headers);
         console.log("Body:", req.body);

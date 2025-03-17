@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import Unidade from "../models/Unidade";
 import { Pessoa } from "../models/Pessoa";
 import Erro from "../errors/Erro";
+import { verificarUnidadeExistente } from "../utils/verificarUnidadeHelper";
 
 class UnidadeController {
     static consultarTodasUnidades = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -38,6 +39,11 @@ class UnidadeController {
         try {
             if (unidade_id === undefined) {
                 throw new Erro('Unidade não fornecida!', 400);
+            }
+
+            const unidadeExiste = await verificarUnidadeExistente(unidade_id);
+            if(!unidadeExiste) {
+                throw new Erro(`Unidade ${unidade_id} não existe`, 404);
             }
 
             const pessoaAtualizada = await Pessoa.findOneAndUpdate(

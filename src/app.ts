@@ -20,9 +20,9 @@ const iniciarServidor = async () => {
         db.on('error', console.error.bind(console, 'Conexão falhou'));
         db.once('open', () => console.log('Conexão bem-sucedida'));
 
-        app.listen(PORT, () => {
-            console.log(`Servidor rodando na porta ${PORT}`);
-        });
+            app.listen(PORT, () => {
+                console.log(`Servidor rodando na porta ${PORT}`);
+            });
 
     } catch (error) {
         console.error("Erro ao conectar ao banco de dados:", error);
