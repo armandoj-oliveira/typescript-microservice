@@ -25,6 +25,7 @@ const manipuladorErroMiddleware: ErrorRequestHandler = (erro: unknown, _req: Req
     } else {
         res.status(500).json({ mensagem: "Erro interno do servidor.", detalhes: "Ocorreu um erro inesperado." });
     }
+
 };
 
 export default manipuladorErroMiddleware;
