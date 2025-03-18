@@ -3,6 +3,7 @@ import { Pessoa } from '../models/Pessoa';
 import { verificarPessoaExistente } from '../utils/verificarPessoaHelper';
 import validarEntradaDados from '../utils/validarEntradaDadosHelper';
 import UnidadeController from './UnidadeController';
+import Erro from '../errors/Erro';
 import ErroValidacao from '../errors/ErroValidacao';
 
 class PessoaController {
@@ -11,7 +12,7 @@ class PessoaController {
             const listarPessoas = await Pessoa.find();
             res.status(200).json(listarPessoas);
         } catch (erro) {
-            next(erro);
+            next(new Erro(erro instanceof Error ? erro.message : "Falha ao buscar as pessoas.", 500));
         }
     };
 

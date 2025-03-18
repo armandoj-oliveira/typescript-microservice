@@ -10,7 +10,7 @@ class UnidadeController {
             const listaUnidades = await Unidade.find({});
             res.status(200).json(listaUnidades);
         } catch (erro) {
-            next(erro);
+            next(new Erro(erro instanceof Error ? erro.message : "Falha ao buscar as unidades.", 500));
         }
     }
 

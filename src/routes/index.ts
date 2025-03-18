@@ -5,10 +5,6 @@ import { verificarInstituicaoMiddleware } from '../middleware/verificarInstituic
 import manipuladorErroMiddleware from '../middleware/manipuladorErroMiddleware';
 
 const configurarRotas = (app: Application) => {
-    app.route('/').get((req: Request, res: Response) => {
-        res.status(200).send('Olá mundo!');
-    });
-
     app.use(express.json());
 
     app.use((req: Request, res: Response, next: NextFunction) => {
