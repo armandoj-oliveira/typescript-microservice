@@ -11,7 +11,8 @@
     "start": "node src/app.js",
     "build": "rimraf dist && tsc",
     "dev": "nodemon --ext ts --exec ts-node src/app.ts",
-    "test": "jest",
+    "test:pessoacontroller": "jest test/controller/PessoaController.spec.ts",
+    "test:unidadecontroller": "jest test/controller/UnidadeController.spec.ts",
     "lint": "yarn eslint . --ext .ts --fix"
   },
   "dependencies": {
