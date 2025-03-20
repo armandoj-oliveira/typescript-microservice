@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
+import IUnidade from "../interface/IUnidade";
 
-const unidadeSchema = new mongoose.Schema({
+const unidadeSchema = new mongoose.Schema<IUnidade>({
     unidade_id: { 
         type: Number, 
         required: [true, 'O ID da unidade é obrigatório.'] 

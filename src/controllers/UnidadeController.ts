@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import Unidade from "../models/Unidade";
 import { Pessoa } from "../models/Pessoa";
-import Erro from "../errors/Erro";
+import Unidade from "../models/Unidade";
 import { verificarUnidadeExistente } from "../utils/verificarUnidadeHelper";
+import Erro from "../errors/Erro";
+import ErroValidacao from "../errors/ErroValidacao";
 
 class UnidadeController {
     static consultarTodasUnidades = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -10,29 +11,29 @@ class UnidadeController {
             const listaUnidades = await Unidade.find({});
             res.status(200).json(listaUnidades);
         } catch (erro) {
-            next(erro);
+            next(new Erro(erro instanceof Error ? erro.message : "Falha ao buscar as unidades.", 500));
         }
     }
 
     static consultarUnidadePorId = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
             const { unidade_id } = req.params;
-            
-            if (!unidade_id) {
-                throw new Erro('O ID da unidade não foi fornecido!', 400);
-            }
 
             const unidadeResultado = await Unidade.findOne({ unidade_id }).exec();
 
             if (!unidadeResultado) {
-                throw new Erro('Não foi possível encontrar o ID fornecido.', 404);
+                throw new ErroValidacao('Não foi possível encontrar o ID fornecido.', 404);
             }
 
-            res.status(200).json(unidadeResultado);
+            res.status(200).json({
+                codigo: "UNIDADE_LOCALIZADA",
+                mensagem: "Unidade encontrada com sucesso!",
+                dados: unidadeResultado
+            });
         } catch (erro) {
             next(erro);
         }
-    }
+    };
 
     // Método para adicionar uma nova unidade ao usuário, caso ele esteja associado a múltiplas unidades
     static adicionarUnidade = async (usuario: string, unidade_id: number) => {
@@ -42,13 +43,13 @@ class UnidadeController {
             }
 
             const unidadeExiste = await verificarUnidadeExistente(unidade_id);
-            if(!unidadeExiste) {
+            if (!unidadeExiste) {
                 throw new Erro(`Unidade ${unidade_id} não existe`, 404);
             }
 
             const pessoaAtualizada = await Pessoa.findOneAndUpdate(
-                { usuario }, 
-                { $addToSet: { unidade_id } }, 
+                { usuario },
+                { $addToSet: { unidade_id } },
                 { new: true }
             );
 
@@ -58,11 +59,11 @@ class UnidadeController {
 
             return pessoaAtualizada;
         } catch (erro: unknown) {
-            
-            if (erro instanceof Error) {
+            if (erro instanceof Erro) {
+                throw erro;
+            } else if (erro instanceof Error) {
                 throw new Erro(erro.message, 500);
             }
-
             throw new Erro('Erro desconhecido.', 500);
         }
     }
