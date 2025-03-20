@@ -6,18 +6,16 @@ import { Pessoa } from "../../src/models/Pessoa";
 jest.mock("../../src/middleware/verificarInstituicaoMiddleware", () => ({
     verificarInstituicaoMiddleware: (req: Request, res: Response, next: NextFunction) => next(),
 }));
-
+jest.mock("../../src/utils/verificarUnidadeHelper", () => ({ verificarUnidadeExistente: jest.fn().mockResolvedValue(false) }));
 jest.mock("../../src/models/Pessoa");
+jest.mock("../../src/controllers/UnidadeController");
 
 const mockPessoa = {
     nome_usuario: "usuario teste",
     usuario: "usuario",
     instituicao: "Instituicao",
     unidade_id: [1],
-    infra_hash: ["a"],
-    unidade_detalhes: {
-        unidade_nome: "Unidade Central"
-    }
+    infra_hash: ["a"]
 };
 
 describe("Pessoa Controller | CONSULTAS | Testes Unitários", () => {
@@ -40,7 +38,7 @@ describe("Pessoa Controller | CONSULTAS | Testes Unitários", () => {
         expect(response.body).toEqual(mockPessoa);
     });
 
-    test("Deve retornar status 500 e mensagem quando falha na busca de usuários", async () => {
+    test("Deve retornar erro 500 e mensagem quando falha na busca de usuários", async () => {
         (Pessoa.find as jest.Mock).mockRejectedValue(new Error("Falha ao buscar as pessoas."));
 
         const response = await request(app).get("/pessoas/usuarios");
@@ -83,9 +81,9 @@ describe("Pessoa Controller | CONSULTAS | Testes Unitários", () => {
 });
 
 describe("Pessoa Controller | CADASTRAR | Testes Unitários", () => {
-    beforeAll(async () => { 
+    beforeAll(async () => {
         jest.clearAllMocks();
-     });
+    });
 
     /*
     
@@ -93,6 +91,15 @@ describe("Pessoa Controller | CADASTRAR | Testes Unitários", () => {
 
     */
 
-    
+    test('Deve retornar status 201 quando cadastrar uma nova pessoa', async () => {
+        (Pessoa.findOne as jest.Mock).mockReturnValue(null);
+        (Pessoa.create as jest.Mock).mockResolvedValue(mockPessoa);
 
+        const response = await request(app).post("/pessoas/").send(mockPessoa);
+
+        expect(response.status).toBe(201);
+        expect(response.body.codigo).toBe('USUARIO_CADASTRADO');
+        expect(Pessoa.create).toHaveBeenCalledWith(mockPessoa);
+    });
+    
 });

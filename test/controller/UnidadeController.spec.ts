@@ -28,7 +28,7 @@ describe("Unidade Controller - Testes Unitários", () => {
 
     */
 
-    test("Deve retornar 200 e todas as unidades", async () => {
+    test("Deve retornar status 200 e todas as unidades", async () => {
         (Unidade.find as jest.Mock).mockResolvedValue([
             { unidade_nome: "Seção de Projetos e Processos" }
         ]);
@@ -39,7 +39,7 @@ describe("Unidade Controller - Testes Unitários", () => {
         expect(response.body).toEqual([{ unidade_nome: "Seção de Projetos e Processos" }]);
     });
 
-    test("Deve retornar 500 e mensagem quando falha na busca de unidades", async () => {
+    test("Deve retornar erro 500 e mensagem quando falha na busca de unidades", async () => {
         (Unidade.find as jest.Mock).mockRejectedValue(new Error("Falha ao buscar as unidades."));
 
         const response = await request(app).get("/unidades/");
@@ -71,7 +71,7 @@ describe("Unidade Controller - Testes Unitários", () => {
         });
     });
 
-    test("Deve retornar status 404 se a unidade não for encontrada", async () => {
+    test("Deve retornar erro 404 se a unidade não for encontrada", async () => {
         (Unidade.findOne as jest.Mock).mockReturnValueOnce({
             exec: () => Promise.resolve(null)
         });
