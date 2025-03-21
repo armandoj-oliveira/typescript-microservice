@@ -5,6 +5,7 @@ import validarEntradaDados from '../utils/validarEntradaDadosHelper';
 import UnidadeController from './UnidadeController';
 import Erro from '../errors/Erro';
 import ErroValidacao from '../errors/ErroValidacao';
+import { verificarUnidadeExistente } from '../utils/verificarUnidadeHelper';
 
 class PessoaController {
     static consultarTodasPessoas = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -39,6 +40,19 @@ class PessoaController {
             const pessoa = await verificarPessoaExistente(req.body.usuario);
 
             if (!pessoa) {
+
+                const unidadeExiste = verificarUnidadeExistente(req.body.unidade_id);
+
+                if(!unidadeExiste) {
+
+                    res.status(404).json({
+                        codigo: 'UNIDADE_NAO_ENCONTRADA',
+                        mensagem: 'Unidade não encontrada.'
+                    });
+
+                    return;
+                }
+                
                 const novaPessoa = await Pessoa.create(req.body);
 
                 res.status(201).json({
@@ -48,10 +62,6 @@ class PessoaController {
                 });
             } else if (!pessoa.unidade_id.includes(req.body.unidade_id)) {
                 const pessoaNovaUnidade = await UnidadeController.adicionarUnidade(req.body.usuario, req.body.unidade_id);
-
-                console.log("Pessoa encontrada:", pessoa);
-                console.log("Unidades da pessoa:", pessoa.unidade_id);
-                console.log("Unidade a ser adicionada:", req.body.unidade_id);
 
                 res.status(200).json({
                     codigo:

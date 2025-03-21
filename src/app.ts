@@ -1,11 +1,13 @@
 import "dotenv/config";
 import express from 'express';
+import helmet from "helmet";
 import cors from 'cors';
 import conectarBanco from "./config/dbConnect";
 import configurarRotas from './routes/index';
 
 const app = express();
 
+app.use(helmet());
 app.use(cors());
 app.use(express.json());
 

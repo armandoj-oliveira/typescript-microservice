@@ -1,12 +1,10 @@
-import express, { Application, NextFunction, Request, Response } from 'express';
+import { Application, NextFunction, Request, Response } from 'express';
 import pessoasRoutes from './pessoasRoutes';
 import unidadeRoutes from './unidadeRoutes';
 import { verificarInstituicaoMiddleware } from '../middleware/verificarInstituicaoMiddleware';
 import manipuladorErroMiddleware from '../middleware/manipuladorErroMiddleware';
 
 const configurarRotas = (app: Application) => {
-    app.use(express.json());
-
     app.use((req: Request, res: Response, next: NextFunction) => {
         console.log("📥 Requisição recebida:");
         console.log("Headers:", req.headers);
